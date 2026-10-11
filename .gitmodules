@@ -1,0 +1,33 @@
+[submodule "lab_1"]
+	path = lab_1
+	url = git@github.com:DrordeHartog/huji_agp_lab_1.git
+[submodule "lab_2"]
+	path = lab_2
+	url = git@github.com:DrordeHartog/huji_agp_lab_2.git
+[submodule "lab_3"]
+	path = lab_3
+	url = git@github.com:DrordeHartog/huji_agp_lab_3.git
+[submodule "lab_4"]
+	path = lab_4
+	url = git@github.com:DrordeHartog/huji_agp_lab_4.git
+[submodule "lab_5"]
+	path = lab_5
+	url = git@github.com:DrordeHartog/huji_agp_lab_5.git
+[submodule "lab_6"]
+	path = lab_6
+	url = git@github.com:DrordeHartog/huji_agp_lab_6.git
+[submodule "lab_7"]
+	path = lab_7
+	url = git@github.com:DrordeHartog/huji_agp_lab_7.git
+[submodule "lab_8"]
+	path = lab_8
+	url = git@github.com:DrordeHartog/huji_agp_lab_8.git
+[submodule "lab_9"]
+	path = lab_9
+	url = git@github.com:DrordeHartog/huji_agp_lab_9.git
+[submodule "lab_10"]
+	path = lab_10
+	url = git@github.com:DrordeHartog/huji_agp_lab_10.git
+[submodule "lab_11"]
+	path = lab_11
+	url = git@github.com:DrordeHartog/huji_agp_lab_11.git
