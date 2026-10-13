@@ -1,18 +1,54 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { handToFrequency, handToSound } from "../src/control.js";
+import { handSize, handToFrequency, handToSound, handToVolume } from "../src/control.js";
 
 const fakeHand = {
   landmarks: Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5, z: 0 })),
   handedness: "Right",
 };
 
+// Hand whose wrist→middle-knuckle length (its apparent size) is `size` of the frame.
+function handOfSize(size) {
+  const landmarks = Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5, z: 0 }));
+  landmarks[0] = { x: 0.5, y: 0.5 + size, z: 0 }; // wrist
+  landmarks[9] = { x: 0.5, y: 0.5, z: 0 }; // middle-finger knuckle
+  return { landmarks, handedness: "Right" };
+}
+
 test("no hand → silent", () => {
   assert.deepEqual(handToSound([]), { volume: 0, frequency: 440 });
 });
 
-test("one hand → fixed A4 at 0.3", () => {
-  assert.deepEqual(handToSound([fakeHand]), { volume: 0.3, frequency: 440 });
+test("one hand → A4", () => {
+  assert.equal(handToSound([fakeHand]).frequency, 440);
+});
+
+// F5 — volume from distance to the camera (handToVolume): closer = bigger = louder
+
+test("volume: hand size is wrist → middle-knuckle length", () => {
+  assertCloseTo(handSize(handOfSize(0.25)), 0.25);
+});
+
+test("volume: far hand (small) → 0", () => {
+  assert.equal(handToVolume(handOfSize(0.05)), 0);
+});
+
+test("volume: close hand (big) → 1", () => {
+  assert.equal(handToVolume(handOfSize(0.6)), 1);
+});
+
+test("volume: halfway between FAR and NEAR → 0.5", () => {
+  assertCloseTo(handToVolume(handOfSize((0.12 + 0.35) / 2)), 0.5);
+});
+
+test("volume: rises as the hand comes closer", () => {
+  assert.ok(handToVolume(handOfSize(0.3)) > handToVolume(handOfSize(0.2)));
+});
+
+test("volume: malformed hand → 0, never NaN", () => {
+  for (const hand of [undefined, null, {}, { landmarks: [] }]) {
+    assert.equal(handToVolume(hand), 0);
+  }
 });
 
 // F4 — pitch from height (handToFrequency)
