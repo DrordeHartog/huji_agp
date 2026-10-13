@@ -1,6 +1,3 @@
-[submodule "lab_1"]
-	path = lab_1
-	url = git@github.com:DrordeHartog/huji_agp_lab_1.git
 [submodule "lab_2"]
 	path = lab_2
 	url = git@github.com:DrordeHartog/huji_agp_lab_2.git
