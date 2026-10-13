@@ -1,6 +1,6 @@
 # Hand Theremin — working notes for agents
 
-Browser-only theremin: one hand in front of the webcam, height = pitch, pinch = volume.
+Browser-only theremin: one hand in front of the webcam, height = pitch, closer to the camera = louder.
 Spec: `docs/superpowers/specs/2026-10-13-hand-theremin-design.md` — read it first; its **Module interfaces** section is the contract.
 
 ## Rules
@@ -17,7 +17,7 @@ Spec: `docs/superpowers/specs/2026-10-13-hand-theremin-design.md` — read it fi
 | F1 Audio engine | Partner A | `src/audio.js` |
 | F2 Camera + hand tracking + overlay | Partner B | `src/camera.js`, `src/hands.js`, `src/overlay.js` |
 | F4 Pitch from height | Partner A | `handToFrequency` in `src/control.js` |
-| F5 Volume from pinch | Partner B | `handToVolume` in `src/control.js` |
+| F5 Volume from distance | Partner B | `handSize`, `handToVolume` in `src/control.js` |
 
 ## Workflow
 

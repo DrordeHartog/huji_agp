@@ -2,7 +2,7 @@
 
 **Date:** 2026-10-13
 **Course:** HUJI Agentic Programming, Lab 1 (pair project)
-**One sentence:** A browser theremin you play with one hand in front of the webcam — hand height sets pitch, pinch sets volume.
+**One sentence:** A browser theremin you play with one hand in front of the webcam — hand height sets pitch, distance to the camera sets volume (closer = louder).
 
 ## Constraints
 
@@ -57,6 +57,7 @@ export function drawFrame(ctx: CanvasRenderingContext2D, videoEl, hands: Hand[])
 
 // src/control.js   (pure, no DOM — easy to test)
 export function handToSound(hands: Hand[]) → { volume: number, frequency: number }
+export function handSize(hand: Hand): number   // wrist → middle knuckle, frame units (bigger = closer)
 ```
 
 `main.js` loop each frame: `hands = tracker.detect(video, now)` → `drawFrame(ctx, video, hands)` → `{volume, frequency} = handToSound(hands)` → `audio.setVolume(volume)`, `audio.setFrequency(frequency)` → update status line.
@@ -76,7 +77,7 @@ Work happens on feature branches merged into `main` via PR. Because each module 
 | F2 | **Camera + hand tracking + overlay** — real `camera.js`, `hands.js`, `overlay.js`; dots on hand | Partner B | `src/camera.js`, `src/hands.js`, `src/overlay.js` | F0 |
 | F3 | **MVP: hand on = note on** — `handToSound` returns `{volume: 0.3, frequency: 440}` if a hand is present, else `{volume: 0, ...}`; deploy to Pages and test the live URL | Together | `src/control.js`, `main.js` | F1, F2 |
 | F4 | **Pitch from height** — index fingertip `y` → frequency | Partner A | `src/control.js` (pitch part) | F3 |
-| F5 | **Volume from pinch** — thumb-tip↔index-tip distance ÷ hand size → volume | Partner B | `src/control.js` (volume part) | F3 |
+| F5 | **Volume from distance** — hand size in the frame (wrist → middle knuckle; bigger = closer) → volume, closer = louder. Changed from pinch on 2026-10-13: pinching moved the index fingertip and bent the pitch | Partner B | `src/control.js` (volume part) | F3 |
 | F6+ | Stretch, pick one at a time: scale snapping + note name display; pitch guide lines; glow/particle visuals; open-palm gesture cycles waveform | Split as you go | — | F4, F5 |
 
 F1 ∥ F2 and F4 ∥ F5 are the parallel pairs. To keep F4/F5 conflict-free, `control.js` is structured as two functions from the start: `handToFrequency(hand)` and `handToVolume(hand)`, each owned by one partner, with `handToSound` combining them.
@@ -96,5 +97,5 @@ F0–F3 only: one fixed note (A4, 440 Hz) at fixed volume (0.3) plays while a ha
 
 - Mirrored video: overlay must mirror the drawing to match; MediaPipe `handedness` is from the camera's point of view (irrelevant while using one hand).
 - Tracking jitter → smooth values before audio (relevant from F4/F5).
-- Hand closer to camera looks bigger → normalize pinch by hand size (F5).
+- Hand closer to camera looks bigger — F5 uses exactly this as the volume control.
 - First load downloads ~8 MB model — open the page once before the demo.

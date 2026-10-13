@@ -1,20 +1,17 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { handToFrequency, handToSound, handToVolume } from "../src/control.js";
+import { handSize, handToFrequency, handToSound, handToVolume } from "../src/control.js";
 
 const fakeHand = {
   landmarks: Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5, z: 0 })),
   handedness: "Right",
 };
 
-// Hand of the given size (wrist→middle knuckle) whose thumb and index tips are
-// `pinch` hand-sizes apart.
-function handWithPinch(pinch, size = 0.2) {
+// Hand whose wrist→middle-knuckle length (its apparent size) is `size` of the frame.
+function handOfSize(size) {
   const landmarks = Array.from({ length: 21 }, () => ({ x: 0.5, y: 0.5, z: 0 }));
   landmarks[0] = { x: 0.5, y: 0.5 + size, z: 0 }; // wrist
   landmarks[9] = { x: 0.5, y: 0.5, z: 0 }; // middle-finger knuckle
-  landmarks[4] = { x: 0.4, y: 0.4, z: 0 }; // thumb tip
-  landmarks[8] = { x: 0.4 + pinch * size, y: 0.4, z: 0 }; // index tip
   return { landmarks, handedness: "Right" };
 }
 
@@ -26,26 +23,32 @@ test("one hand → A4", () => {
   assert.equal(handToSound([fakeHand]).frequency, 440);
 });
 
-test("pinched hand → volume 0", () => {
-  assert.equal(handToVolume(handWithPinch(0.1)), 0);
+// F5 — volume from distance to the camera (handToVolume): closer = bigger = louder
+
+test("volume: hand size is wrist → middle-knuckle length", () => {
+  assertCloseTo(handSize(handOfSize(0.25)), 0.25);
 });
 
-test("open hand → volume 1", () => {
-  assert.equal(handToVolume(handWithPinch(1.5)), 1);
+test("volume: far hand (small) → 0", () => {
+  assert.equal(handToVolume(handOfSize(0.05)), 0);
 });
 
-test("half-open pinch → volume 0.5", () => {
-  assert.ok(Math.abs(handToVolume(handWithPinch(0.6)) - 0.5) < 1e-9);
+test("volume: close hand (big) → 1", () => {
+  assert.equal(handToVolume(handOfSize(0.6)), 1);
 });
 
-test("same pinch closer to the camera → same volume", () => {
-  const far = handToVolume(handWithPinch(0.5, 0.1));
-  const near = handToVolume(handWithPinch(0.5, 0.3));
-  assert.ok(Math.abs(far - near) < 1e-9);
+test("volume: halfway between FAR and NEAR → 0.5", () => {
+  assertCloseTo(handToVolume(handOfSize((0.12 + 0.35) / 2)), 0.5);
 });
 
-test("zero-size hand → volume 0, not NaN", () => {
-  assert.equal(handToVolume(fakeHand), 0);
+test("volume: rises as the hand comes closer", () => {
+  assert.ok(handToVolume(handOfSize(0.3)) > handToVolume(handOfSize(0.2)));
+});
+
+test("volume: malformed hand → 0, never NaN", () => {
+  for (const hand of [undefined, null, {}, { landmarks: [] }]) {
+    assert.equal(handToVolume(hand), 0);
+  }
 });
 
 // F4 — pitch from height (handToFrequency)
