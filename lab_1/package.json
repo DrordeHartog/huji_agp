@@ -1,0 +1,6 @@
+{
+  "name": "hand-theremin",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test" }
+}
