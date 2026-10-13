@@ -7,8 +7,21 @@ export function handToFrequency(hand) {
   return BASE_FREQUENCY;
 }
 
+// Pinch = thumb-tip↔index-tip distance in hand sizes (wrist → middle knuckle),
+// so moving closer to the camera doesn't change it. Tune these by feel.
+const PINCHED = 0.2; // at or below → silent
+const OPEN = 1.0; // at or above → full volume
+
+function distance(a, b) {
+  return Math.hypot(a.x - b.x, a.y - b.y); // z is noisy; ignore it
+}
+
 export function handToVolume(hand) {
-  return 0.3;
+  const lm = hand.landmarks;
+  const handSize = distance(lm[0], lm[9]);
+  if (handSize === 0) return 0;
+  const pinch = distance(lm[4], lm[8]) / handSize;
+  return Math.min(1, Math.max(0, (pinch - PINCHED) / (OPEN - PINCHED)));
 }
 
 export function handToSound(hands) {
