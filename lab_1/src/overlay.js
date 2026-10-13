@@ -15,5 +15,14 @@ export function drawFrame(ctx, videoEl, hands) {
   ctx.translate(width, 0);
   ctx.scale(-1, 1); // mirror, like a selfie view
   ctx.drawImage(videoEl, 0, 0, width, height);
+  // Landmarks are in video coordinates, so drawing them inside the mirror keeps them on the hand.
+  ctx.fillStyle = "#7c5cff";
+  for (const hand of hands) {
+    for (const { x, y } of hand.landmarks) {
+      ctx.beginPath();
+      ctx.arc(x * width, y * height, 5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
   ctx.restore();
 }
