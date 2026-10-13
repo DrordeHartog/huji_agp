@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Hand Theremin</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <main>
+    <h1>Hand Theremin</h1>
+    <p class="hint">Raise your hand for higher notes. Pinch to play quieter.</p>
+    <div class="stage">
+      <video id="video" playsinline muted hidden></video>
+      <canvas id="canvas" width="640" height="480"></canvas>
+    </div>
+    <button id="start" type="button">Start</button>
+    <p id="status" role="status">Loading…</p>
+  </main>
+  <script>
+    if (location.protocol === "file:") {
+      document.getElementById("status").textContent =
+        "Open this page through a local server (python3 -m http.server), not by double-clicking the file.";
+    }
+  </script>
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>

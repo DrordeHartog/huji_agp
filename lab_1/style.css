@@ -1,0 +1,11 @@
+:root { color-scheme: dark; --bg: #0b0b12; --fg: #eee; --accent: #7c5cff; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: system-ui, sans-serif; }
+main { max-width: 680px; margin: 0 auto; padding: 24px 16px; text-align: center; }
+h1 { margin: 0 0 4px; }
+.hint { margin: 0 0 16px; opacity: 0.7; }
+.stage canvas { width: 100%; height: auto; border-radius: 12px; background: #111; display: block; }
+button { margin-top: 16px; padding: 12px 32px; font-size: 18px; border: 0; border-radius: 999px;
+         background: var(--accent); color: white; cursor: pointer; }
+button:disabled { opacity: 0.5; cursor: default; }
+#status { min-height: 1.5em; opacity: 0.85; }
