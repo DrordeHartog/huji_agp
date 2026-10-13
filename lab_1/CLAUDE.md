@@ -6,7 +6,7 @@ Spec: `docs/superpowers/specs/2026-10-13-hand-theremin-design.md` — read it fi
 ## Rules
 
 - Browser only: HTML/CSS/JS, no server, backend, database, or API keys. No build step — plain ES modules.
-- All URLs relative (`src/x.js`, never `/src/x.js`) — GitHub Pages serves under `/huji_agp_lab_1/`.
+- All URLs relative (`src/x.js`, never `/src/x.js`) — GitHub Pages serves this folder under `/huji_agp/lab_1/`.
 - Do not change a module's exported signatures without agreeing with the other partner; update the spec if you do.
 - Stay inside the files you own for your feature (table below). Touch `main.js` / `index.html` only in "Together" features.
 
@@ -21,6 +21,7 @@ Spec: `docs/superpowers/specs/2026-10-13-hand-theremin-design.md` — read it fi
 
 ## Workflow
 
-- Branch from `main` per feature: `f1-audio`, `f2-hands`, … → PR into `main`. Pages publishes from `main`.
-- Run locally: `python3 -m http.server 8000` → http://localhost:8000 (camera needs localhost/HTTPS; `file://` won't work).
+- Repo: `https://github.com/DrordeHartog/huji_agp` (public). Lab 1 is the `lab_1/` folder — a normal folder, not a submodule. Other `lab_#` folders are submodules; don't touch them.
+- Branch from `main` per feature: `lab1-f1-audio`, `lab1-f2-hands`, … → PR into `main`. The repo's Pages workflow (`.github/workflows/pages.yml`) deploys on every push to `main`; live at https://drordehartog.github.io/huji_agp/lab_1/.
+- Run locally from inside `lab_1/`: `python3 -m http.server 8000` → http://localhost:8000 (camera needs localhost/HTTPS; `file://` won't work).
 - Tests: `npm test` (Node built-in runner; covers pure `src/control.js`). Camera/audio are checked by hand in Chrome.

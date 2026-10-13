@@ -7,7 +7,7 @@
 ## Constraints
 
 - Runs entirely in the browser: HTML, CSS, JavaScript. No server, backend, database, or API keys.
-- Published with GitHub Pages from `main` (expected URL: `https://drordehartog.github.io/huji_agp_lab_1/`).
+- Lives in the `lab_1/` folder of the public `DrordeHartog/huji_agp` repo, published by its Pages workflow from `main` at `https://drordehartog.github.io/huji_agp/lab_1/`.
 - No build step. Plain ES modules loaded directly by the browser.
 - Demo-able in 90 seconds.
 
