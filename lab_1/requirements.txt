@@ -1,0 +1,19 @@
+# Hand Theremin — requirements
+#
+# There are NO pip or npm packages to install. The app is plain HTML/CSS/JS
+# that runs in the browser with no build step. This file records what the
+# project depends on so both partners use the same versions.
+# (All lines are comments, so `pip install -r requirements.txt` is a no-op.)
+
+# --- Runtime (loaded by the browser, nothing to install) ---------------------
+# Browser: Chrome (latest) — needs camera access and Web Audio API
+# Web Audio API: built into the browser (used by src/audio.js)
+# MediaPipe Tasks Vision 1.0.1, from CDN (used by src/hands.js):
+#   https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/vision_bundle.mjs
+#   wasm dir: https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@1.0.1/wasm
+# Hand landmark model (~8 MB, downloaded on first load):
+#   https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/1/hand_landmarker.task
+
+# --- Development tools -------------------------------------------------------
+# python3 >= 3.8   local server:  cd lab_1 && python3 -m http.server 8000
+# node >= 20       tests:         cd lab_1 && npm test   (built-in node:test, no deps)
